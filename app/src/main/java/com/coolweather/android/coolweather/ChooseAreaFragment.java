@@ -1,6 +1,7 @@
 package com.coolweather.android.coolweather;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -93,17 +94,23 @@ public class ChooseAreaFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (currentLevel == LEVEL_PROVINCE){
-                    selectedProvince = mProvinceList.get(position);
-                    queryCities(); //查询城市
-                }else if (currentLevel == LEVEL_CITY){
-                    selectedCity = mCityList.get(position);
-                    queryCounties(); //查询县城
-                }
-            }
-        });
+                                             @Override
+                                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                 if (currentLevel == LEVEL_PROVINCE) {
+                                                     selectedProvince = mProvinceList.get(position);
+                                                     queryCities(); //查询城市
+                                                 } else if (currentLevel == LEVEL_CITY) {
+                                                     selectedCity = mCityList.get(position);
+                                                     queryCounties(); //查询县城
+                                                 } else if (currentLevel == LEVEL_COUNTY) {
+                                                     String weatherId = mCountyList.get(position).getWeatherId();
+                                                     Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                                                     intent.putExtra("weather_id", weatherId);
+                                                     startActivity(intent);
+                                                     getActivity().finish();
+                                                 }
+                                             }
+                                         });
         mBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
